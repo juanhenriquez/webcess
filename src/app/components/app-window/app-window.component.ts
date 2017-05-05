@@ -11,8 +11,8 @@ import 'rxjs/add/operator/takeUntil';
   selector: 'ws-app-window',
   styleUrls: ['./app-window.scss'],
   template: `
-    <div class="app-window-container" #window draggable>
-      <div class="app-window__bar">
+    <div class="app-window-container" #window (click)="focusWindow()">
+      <div class="app-window__bar" #windowBar windowBar>
         <ul class="window-icons">
           <li class="window__icon window__icon--red"></li>
           <li class="window__icon window__icon--yellow"></li>
@@ -27,12 +27,14 @@ import 'rxjs/add/operator/takeUntil';
 export class AppWindowComponent implements OnInit {
 
   @ViewChild('window') window: ElementRef;
+  @ViewChild('windowBar') windowBar: ElementRef;
   @ViewChild('windowContent') windowContent: ElementRef;
 
-  @Input() title: string = "Visual Studio Code";
-  @Input() img: string = "vscode-bg.png";
+  @Input() title: string;
+  @Input() img: string;
 
   isMaximized: boolean = false;
+  isDraggableInitialized: boolean = false;
 
   constructor(
     private _renderer: Renderer2
@@ -48,11 +50,31 @@ export class AppWindowComponent implements OnInit {
 
   maximizeWindow() {
     this.isMaximized = !this.isMaximized;
-
     if ( this.isMaximized ) {
-      this._renderer.addClass(this.window.nativeElement, 'app-window-container--maximixed');
+      this.setMaximizedWindowStyles();
     } else {
-      this._renderer.removeClass(this.window.nativeElement, 'app-window-container--maximixed');
+      this.resetMaximizedWindowStyles()
     }
+  }
+
+  focusWindow() {
+    $('.app-window-container').removeClass('focus-window');
+    this._renderer.addClass(this.window.nativeElement, 'focus-window');
+  }
+  
+  setMaximizedWindowStyles() {
+    this._renderer.addClass(this.window.nativeElement, 'app-window-container--maximixed');
+    this._renderer.setStyle(this.window.nativeElement, 'width', '100vw');
+    this._renderer.setStyle(this.window.nativeElement, 'height', '100vh');
+    this._renderer.setStyle(this.window.nativeElement, 'top', '0');
+    this._renderer.setStyle(this.window.nativeElement, 'left', '0');
+  }
+
+  resetMaximizedWindowStyles() {
+    this._renderer.removeClass(this.window.nativeElement, 'app-window-container--maximixed');
+    this._renderer.removeStyle(this.window.nativeElement, 'width');
+    this._renderer.removeStyle(this.window.nativeElement, 'height');
+    this._renderer.removeStyle(this.window.nativeElement, 'top');
+    this._renderer.removeStyle(this.window.nativeElement, 'left');
   }
 }

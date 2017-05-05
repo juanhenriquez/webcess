@@ -2,5 +2,6 @@ export interface App {
   id: number,
   name: string,
   img: string,
-  icon: string
+  icon: string,
+  open: boolean
 }

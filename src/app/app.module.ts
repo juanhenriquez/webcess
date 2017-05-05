@@ -8,21 +8,22 @@ import { MaterialModule } from './app-material.module';
 import { AppComponent } from './app.component';
 import { DashComponent } from './components/dash/dash.component';
 import { AppWindowComponent } from './components/app-window/app-window.component';
-import { NgDraggableModule } from 'angular-draggable';
+
+import { WindowBarDirective } from './components/app-window/window-bar.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashComponent,
-    AppWindowComponent
+    AppWindowComponent,
+    WindowBarDirective
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     BrowserAnimationsModule,
-    MaterialModule,
-    NgDraggableModule
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent],
