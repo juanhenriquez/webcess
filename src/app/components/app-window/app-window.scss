@@ -1,0 +1,58 @@
+.app-window-container {
+  width: 700px;;
+  height: 500px;
+  border-radius: 5px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.app-window-container--maximixed {
+  width: 90vw;
+  height: 90vh;
+}
+
+.app-window__bar {
+  width: 100%;
+  height: 25px;
+  background-color: #f5f5f5;
+  border-radius: 5px 5px 0 0;
+  display: flex;
+  align-items: center;
+}
+
+.window__icon {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  margin: 0 5px;
+}
+
+.window-icons {
+  display: flex;
+}
+
+.window__icon--red {
+ background-color: #f44336;
+}
+.window__icon--yellow {
+ background-color: #ffeb3b;
+}
+.window__icon--green {
+ background-color: #4caf50;
+}
+
+.window__title {
+  text-align: center;
+  flex-grow: 1;
+  user-select: none;
+}
+
+.app-window__content {
+  width: 100%;
+  height: 100%;
+  background-color: #263238;
+  background-image: url(/assets/img/vscode-bg.png);
+  background-size: cover;
+}
