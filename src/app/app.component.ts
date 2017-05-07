@@ -9,7 +9,6 @@ import { App } from './models/app';
   template: `
     <div id="app-container">
       <div class="desktop-container" #entry></div>  
-      <ws-app-window></ws-app-window>
       <ws-dash 
         [apps]="apps"
         (open)="onOpenApp($event)">
@@ -21,8 +20,8 @@ import { App } from './models/app';
 export class AppComponent implements OnInit {
 
   @ViewChild('entry', { read: ViewContainerRef }) entry: ViewContainerRef;
-  @ViewChildren(AppWindowComponent) appWindows: QueryList<AppWindowComponent>
   
+  appsOpenedList: Map<number, AppWindowComponent> = new Map<number, AppWindowComponent>();
   appsMap: Map<number, App>;
   activeApp: number;
 
@@ -39,7 +38,10 @@ export class AppComponent implements OnInit {
       name: 'Spotify',
       img: 'spotify-bg.png',
       icon: 'spotify.png', 
-      open: false
+      open: false,
+      requirements: {
+        sound: true
+      }
     }
   ];
 
@@ -64,8 +66,11 @@ export class AppComponent implements OnInit {
       
       component.title = app.name;
       component.img = app.img;
+
+      this.appsOpenedList.set(id, component);
+    } else {
+      this.appsOpenedList.get(id).focusWindow();
     }
-    console.log(this.appWindows);
   }
 
 }

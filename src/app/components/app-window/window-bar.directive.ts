@@ -1,11 +1,9 @@
-import { Directive, HostListener, ElementRef, Renderer2, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Directive, HostListener, ElementRef, Renderer2, OnInit } from '@angular/core';
 
 @Directive({
   selector: '[windowBar]'
 })
-export class WindowBarDirective implements OnInit, AfterViewInit {
-
-  @ViewChild('li') iconGreen;
+export class WindowBarDirective implements OnInit {
 
   isMaximized: boolean = false;
   isDraggableInitialized: boolean = false;
@@ -44,10 +42,6 @@ export class WindowBarDirective implements OnInit, AfterViewInit {
         console.log(this.isDraggableInitialized, this.isMaximized);
       }
     });
-  }
-
-  ngAfterViewInit() {
-    console.log(this.iconGreen);
   }
 
 }

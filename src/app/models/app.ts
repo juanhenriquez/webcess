@@ -3,5 +3,9 @@ export interface App {
   name: string,
   img: string,
   icon: string,
-  open: boolean
+  open: boolean,
+  requirements?: {
+    sound?: boolean,
+    camera?: boolean
+  }
 }
