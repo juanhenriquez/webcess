@@ -1,0 +1,52 @@
+{
+  "apps": [
+    {
+      "id": 0,
+      "name": "Visual Studio Code",
+      "img": "vscode-bg.png",
+      "icon": "vscode.png",
+      "open": false,
+      "status": "inactive",
+      "size": 100,
+      "ramReq": 55,
+      "quantum": 3
+    },
+    {
+      "id": 1,
+      "name": "Spotify",
+      "img": "spotify-bg.png",
+      "icon": "spotify.png", 
+      "open": false,
+      "status": "inactive",
+      "quantum": 4,
+      "size": 375,
+      "ramReq": 67,
+      "resources": {
+        "sound": true
+      }
+    },
+    {
+      "id": 2,
+      "name": "Skype",
+      "img": "spotify-bg.png",
+      "icon": "spotify.png", 
+      "open": false,
+      "status": "inactive",
+      "quantum": 3,
+      "size": 500,
+      "ramReq": 80,
+      "resources": {
+        "sound": true,
+        "camera": true
+      }
+    }
+  ],
+  "system": {
+    "user": "Juan Henriquez",
+    "rol": "admin",
+    "so": "PolygonOS",
+    "disk": {
+      "size": 10000
+    }
+  }
+}

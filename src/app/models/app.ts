@@ -4,7 +4,12 @@ export interface App {
   img: string,
   icon: string,
   open: boolean,
-  requirements?: {
+  quantum: number,
+  remainingQuantum?: number,
+  size: number,
+  ramReq: number,
+  status: string,
+  resources?: {
     sound?: boolean,
     camera?: boolean
   }

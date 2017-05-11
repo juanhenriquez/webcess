@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Renderer2, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, Renderer2, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromEvent';
@@ -7,6 +7,8 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/takeUntil';
 
+import { App } from './../../models/app';
+
 @Component({
   selector: 'ws-app-window',
   styleUrls: ['./app-window.scss'],
@@ -14,7 +16,7 @@ import 'rxjs/add/operator/takeUntil';
     <div class="app-window-container" #window (click)="focusWindow()">
       <div class="app-window__bar" #windowBar windowBar>
         <ul class="window-icons">
-          <li class="window__icon window__icon--red"></li>
+          <li class="window__icon window__icon--red" (click)="closeApp()"></li>
           <li class="window__icon window__icon--yellow"></li>
           <li class="window__icon window__icon--green" (click)="maximizeWindow()"></li>
         </ul>
@@ -30,8 +32,11 @@ export class AppWindowComponent implements OnInit {
   @ViewChild('windowBar') windowBar: ElementRef;
   @ViewChild('windowContent') windowContent: ElementRef;
 
+  @Input() app: App;
   @Input() title: string;
   @Input() img: string;
+
+  @Output() close: EventEmitter<number> = new EventEmitter<number>();
 
   isMaximized: boolean = false;
   isDraggableInitialized: boolean = false;
@@ -46,6 +51,10 @@ export class AppWindowComponent implements OnInit {
       'backgroundImage', 
       `url(/assets/img/${this.img})`
     );
+  }
+
+  closeApp() {
+    this.close.emit(this.app.id);
   }
 
   maximizeWindow() {

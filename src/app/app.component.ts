@@ -1,7 +1,14 @@
 import { Component, ComponentFactoryResolver, ViewContainerRef, ViewChild, OnInit, Renderer2, ViewChildren, QueryList } from '@angular/core';
 
+// components
 import { AppWindowComponent } from './components/app-window/app-window.component';
 
+// services
+import { ProcessPlanificationService } from './services/process-planification.service';
+import { SystemManagmentService } from './services/system-managment.service';
+import { AppService } from './app.service';
+
+// models
 import { App } from './models/app';
 
 @Component({
@@ -25,34 +32,24 @@ export class AppComponent implements OnInit {
   appsMap: Map<number, App>;
   activeApp: number;
 
-  apps: App[] = [
-    {
-      id: 0,
-      name: 'Visual Studio Code',
-      img: 'vscode-bg.png',
-      icon: 'vscode.png',
-      open: false
-    },
-    {
-      id: 1,
-      name: 'Spotify',
-      img: 'spotify-bg.png',
-      icon: 'spotify.png', 
-      open: false,
-      requirements: {
-        sound: true
-      }
-    }
-  ];
+  apps: App[];
 
   constructor(
     private _resolver: ComponentFactoryResolver,
-    private _render: Renderer2
+    private _render: Renderer2,
+    private _appService: AppService,
+    private _system: SystemManagmentService,
+    private _process: ProcessPlanificationService
   ) { }
 
   ngOnInit() {
-    const map = this.apps.map<[number, App]>(app => [app.id, app]); 
-    this.appsMap = new Map<number, App>(map);
+    this._appService.getApps()
+      .subscribe((apps: App[]) => {
+        const map = apps.map<[number, App]>(app => [app.id, app]); 
+        this.appsMap = new Map<number, App>(map);
+        this.apps = apps;
+        this._process.initProcessPlanification(apps);
+      });
   }
 
   onOpenApp(id: number){
@@ -61,16 +58,21 @@ export class AppComponent implements OnInit {
     
     if (!app.open) {
       const appWindowFactory = this._resolver.resolveComponentFactory(AppWindowComponent);
-      const component = this.entry.createComponent(appWindowFactory).instance;
+      const component = this.entry.createComponent(appWindowFactory);
       this.appsMap.set(id, Object.assign({}, app, { open: true }))
       
-      component.title = app.name;
-      component.img = app.img;
-
-      this.appsOpenedList.set(id, component);
+      component.instance.app = app;
+      component.instance.title = app.name;
+      component.instance.img = app.img;
+      component.instance.close
+        .subscribe((id: number) => {
+          this.appsMap.delete(id);
+          component.destroy();
+        });
+      
+      this.appsOpenedList.set(id, component.instance);
     } else {
       this.appsOpenedList.get(id).focusWindow();
     }
   }
-
 }
